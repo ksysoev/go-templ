@@ -9,9 +9,11 @@ import (
 
 type BuildInfo struct {
 	Version string
+	AppName string
 }
 type cmdFlags struct {
-	Version    string
+	version    string
+	appName    string
 	ConfigPath string `mapstructure:"config"`
 	LogLevel   string `mapstructure:"log_level"`
 	TextFormat bool   `mapstructure:"log_text"`
@@ -20,11 +22,12 @@ type cmdFlags struct {
 // InitCommand initializes the root command of the CLI application with its subcommands and flags.
 func InitCommand(build BuildInfo) cobra.Command {
 	flags := cmdFlags{
-		Version: build.Version,
+		version: build.Version,
+		appName: build.AppName,
 	}
 
 	cmd := cobra.Command{
-		Use:   "cli",
+		Use:   flags.appName,
 		Short: "",
 		Long:  "",
 		RunE: func(cmd *cobra.Command, _ []string) error {

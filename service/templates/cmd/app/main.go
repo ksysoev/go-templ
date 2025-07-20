@@ -6,10 +6,13 @@ import (
 	"os/signal"
 	"syscall"
 
-	"{{  .Values.repo }}/pkg/cmd"
+	"{{ .Values.repo }}/pkg/cmd"
 )
 
-var version = "dev"
+var (
+	version = "dev"
+	name    = "app"
+)
 
 // main executes the entry point of the application, delegating to runApp for command execution and lifecycle management.
 func main() {
@@ -25,6 +28,7 @@ func runApp() int {
 
 	command := cmd.InitCommand(cmd.BuildInfo{
 		Version: version,
+		AppName: name,
 	})
 
 	if err := command.ExecuteContext(ctx); err != nil {

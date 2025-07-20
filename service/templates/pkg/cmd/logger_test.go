@@ -9,33 +9,36 @@ import (
 func TestInitLogger(t *testing.T) {
 	tests := []struct {
 		name    string
-		arg     args
+		flags   cmdFlags
 		wantErr bool
 	}{
 		{
 			name: "Valid log level with text format",
-			arg: cmdFlags{
+			flags: cmdFlags{
 				LogLevel:   "info",
 				TextFormat: true,
-				Version:    "1.0.0",
+				version:    "1.0.0",
+				appName:    "test-app",
 			},
 			wantErr: false,
 		},
 		{
 			name: "Valid log level with JSON format",
-			arg: cmdFlags{
+			flags: cmdFlags{
 				LogLevel:   "debug",
 				TextFormat: false,
-				Version:    "1.0.0",
+				version:    "1.0.0",
+				appName:    "test-app",
 			},
 			wantErr: false,
 		},
 		{
 			name: "Invalid log level",
-			arg: cmdFlags{
+			flags: cmdFlags{
 				LogLevel:   "invalid",
 				TextFormat: true,
-				Version:    "1.0.0",
+				version:    "1.0.0",
+				appName:    "test-app",
 			},
 			wantErr: true,
 		},
@@ -43,8 +46,7 @@ func TestInitLogger(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			args := tt.arg
-			err := initLogger(&args)
+			trr := initLogger(&tt.flags)
 
 			if tt.wantErr {
 				assert.Error(t, err)

@@ -47,8 +47,8 @@ func initLogger(flags *cmdFlags) error {
 
 	ctxHandler := &ContextHandler{
 		Handler: logHandler,
-		ver:     flags.Version,
-		app:     "mit",
+		ver:     flags.version,
+		app:     flags.appName,
 	}
 
 	logger := slog.New(ctxHandler)
