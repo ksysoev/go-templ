@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func RunCommand(ctx context.Context, args *args) error {
+func RunCommand(ctx context.Context, args *cmdArgs) error {
 	if err := initLogger(args); err != nil {
 		return fmt.Errorf("failed to init logger: %w", err)
 	}

@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ksysoev/cfn-proc/pkg/cmd"
+	"{{  .Values.repo }}/pkg/cmd"
 )
 
 var version = "dev"

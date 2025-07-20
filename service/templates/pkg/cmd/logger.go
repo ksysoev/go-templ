@@ -20,10 +20,6 @@ type ContextHandler struct {
 
 //nolint:gocritic // ignore this linting rule
 func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
-	if requestID, ok := ctx.Value("req_id").(string); ok {
-		r.AddAttrs(slog.String("req_id", requestID))
-	}
-
 	r.AddAttrs(slog.String("app", h.app), slog.String("ver", h.ver))
 
 	return h.Handler.Handle(ctx, r)
@@ -39,8 +35,7 @@ func initLogger(arg *args) error {
 	}
 
 	options := &slog.HandlerOptions{
-		Level:       logLevel,
-		ReplaceAttr: createReplacer(arg),
+		Level: logLevel,
 	}
 
 	var logHandler slog.Handler
@@ -61,23 +56,4 @@ func initLogger(arg *args) error {
 	slog.SetDefault(logger)
 
 	return nil
-}
-
-// createReplacer creates a function to selectively modify log attributes when the application is in interactive mode.
-// It disables attributes like "time", "app", "ver", and "level" if the arg.Interactive flag is true.
-// Accepts arg configuration options for interactive mode.
-// Returns a function that filters out specific log attributes or nil if interactive mode is disabled.
-func createReplacer(arg *args) func(group []string, a slog.Attr) slog.Attr {
-	if !arg.Interactive {
-		return nil
-	}
-
-	return func(_ []string, a slog.Attr) slog.Attr {
-		switch a.Key {
-		case "time", "app", "ver", "level":
-			return slog.Attr{}
-		default:
-			return a
-		}
-	}
 }

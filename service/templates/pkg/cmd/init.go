@@ -10,7 +10,7 @@ import (
 type BuildInfo struct {
 	Version string
 }
-type args struct {
+type cmdFlags struct {
 	Version    string
 	ConfigPath string `mapstructure:"config"`
 	LogLevel   string `mapstructure:"log_level"`
@@ -19,7 +19,7 @@ type args struct {
 
 // InitCommand initializes the root command of the CLI application with its subcommands and flags.
 func InitCommand(build BuildInfo) cobra.Command {
-	arg := args{
+	arg := cmdFlags{
 		Version: build.Version,
 	}
 
