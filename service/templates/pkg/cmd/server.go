@@ -5,12 +5,12 @@ import (
 	"fmt"
 )
 
-func RunCommand(ctx context.Context, args *cmdArgs) error {
-	if err := initLogger(args); err != nil {
+func RunCommand(ctx context.Context, flags *cmdFlags) error {
+	if err := initLogger(flags); err != nil {
 		return fmt.Errorf("failed to init logger: %w", err)
 	}
 
-	cfg, err := loadConfig(args)
+	_, err := loadConfig(flags)
 	if err != nil {
 		return fmt.Errorf("failed to load config: %w", err)
 	}

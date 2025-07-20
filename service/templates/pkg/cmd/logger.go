@@ -28,9 +28,9 @@ func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
 // initLogger initializes the default logger for the application using slog.
 // It does not take any parameters.
 // It returns an error if the logger initialization fails, although in this implementation, it always returns nil.
-func initLogger(arg *args) error {
+func initLogger(flags *cmdFlags) error {
 	var logLevel slog.Level
-	if err := logLevel.UnmarshalText([]byte(arg.LogLevel)); err != nil {
+	if err := logLevel.UnmarshalText([]byte(flags.LogLevel)); err != nil {
 		return err
 	}
 
@@ -39,7 +39,7 @@ func initLogger(arg *args) error {
 	}
 
 	var logHandler slog.Handler
-	if arg.TextFormat {
+	if flags.TextFormat {
 		logHandler = slog.NewTextHandler(os.Stdout, options)
 	} else {
 		logHandler = slog.NewJSONHandler(os.Stdout, options)
@@ -47,7 +47,7 @@ func initLogger(arg *args) error {
 
 	ctxHandler := &ContextHandler{
 		Handler: logHandler,
-		ver:     arg.Version,
+		ver:     flags.Version,
 		app:     "mit",
 	}
 

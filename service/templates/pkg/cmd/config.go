@@ -13,11 +13,11 @@ type appConfig struct{}
 // loadConfig loads the application configuration from the specified file path and environment variables.
 // It uses the provided args structure to determine the configuration path.
 // The function returns a pointer to the appConfig structure and an error if something goes wrong.
-func loadConfig(arg *cmdArgs) (*appConfig, error) {
+func loadConfig(flags *cmdFlags) (*appConfig, error) {
 	v := viper.NewWithOptions(viper.ExperimentalBindStruct())
 
-	if arg.ConfigPath != "" {
-		v.SetConfigFile(arg.ConfigPath)
+	if flags.ConfigPath != "" {
+		v.SetConfigFile(flags.ConfigPath)
 
 		if err := v.ReadInConfig(); err != nil {
 			return nil, fmt.Errorf("failed to read config: %w", err)

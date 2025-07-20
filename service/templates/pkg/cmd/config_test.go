@@ -88,7 +88,7 @@ api:
 				}
 			}
 
-			arg := &args{
+			arg := &cmdFlags{
 				ConfigPath: configPath,
 			}
 

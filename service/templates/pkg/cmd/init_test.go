@@ -19,7 +19,7 @@ func TestInitCommand(t *testing.T) {
 }
 
 func TestInitRunCommand(t *testing.T) {
-	arg := &args{}
+	arg := &cmdFlags{}
 	cmd := initRunCommand(arg)
 
 	assert.Equal(t, "run", cmd.Use)
@@ -32,7 +32,7 @@ func TestInitRunCommand(t *testing.T) {
 }
 
 func TestInitTokenCommand(t *testing.T) {
-	arg := &args{}
+	arg := &cmdFlags{}
 	cmd := initTokenCommand(arg)
 
 	assert.Equal(t, "token", cmd.Use)

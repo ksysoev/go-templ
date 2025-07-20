@@ -19,7 +19,7 @@ type cmdFlags struct {
 
 // InitCommand initializes the root command of the CLI application with its subcommands and flags.
 func InitCommand(build BuildInfo) cobra.Command {
-	arg := cmdFlags{
+	flags := cmdFlags{
 		Version: build.Version,
 	}
 
@@ -28,12 +28,12 @@ func InitCommand(build BuildInfo) cobra.Command {
 		Short: "",
 		Long:  "",
 		RunE: func(cmd *cobra.Command, _ []string) error {
-			return RunCommand(cmd, &arg)
+			return RunCommand(cmd.Context(), &flags)
 		},
 	}
 
-	cmd.PersistentFlags().StringVar(&arg.LogLevel, "log-level", "info", "log level (debug, info, warn, error)")
-	cmd.PersistentFlags().BoolVar(&arg.TextFormat, "log-text", true, "log in text format, otherwise JSON")
+	cmd.PersistentFlags().StringVar(&flags.LogLevel, "log-level", "info", "log level (debug, info, warn, error)")
+	cmd.PersistentFlags().BoolVar(&flags.TextFormat, "log-text", true, "log in text format, otherwise JSON")
 
 	for _, name := range []string{"log_level", "log_text"} {
 		if err := viper.BindEnv(name); err != nil {
@@ -43,7 +43,7 @@ func InitCommand(build BuildInfo) cobra.Command {
 
 	viper.AutomaticEnv()
 
-	if err := viper.Unmarshal(&arg); err != nil {
+	if err := viper.Unmarshal(&flags); err != nil {
 		slog.Error("failed to unmarshal env vars", "error", err)
 	}
 
