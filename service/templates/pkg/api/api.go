@@ -46,6 +46,7 @@ func (a *API) Run(ctx context.Context) error {
 		Addr:              a.config.Listen,
 		ReadHeaderTimeout: defaultTimeout,
 		WriteTimeout:      defaultTimeout,
+		Handler:           a.newMux(),
 	}
 
 	go func() {
