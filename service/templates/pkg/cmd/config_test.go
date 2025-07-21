@@ -5,19 +5,13 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/ksysoev/make-it-public/pkg/api"
-	"github.com/ksysoev/make-it-public/pkg/edge"
-	"github.com/ksysoev/make-it-public/pkg/revproxy"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"{{ .Values.repo }}/pkg/api"
 )
 
 func TestLoadConfig(t *testing.T) {
 	const validConfig = `
-http:
-  listen: ":8080"
-reverse_proxy:
-  listen: ":8081"
 api:
   listen: ":8082"
 `
@@ -35,9 +29,7 @@ api:
 			expectError: false,
 			configData:  validConfig,
 			expectConfig: &appConfig{
-				HTTP:     edge.Config{Listen: ":8080"},
-				RevProxy: revproxy.Config{Listen: ":8081"},
-				API:      api.Config{Listen: ":8082"},
+				API: api.Config{Listen: ":8082"},
 			},
 		},
 		{
@@ -54,14 +46,12 @@ api:
 		{
 			name: "valid config with environment overrides",
 			envVars: map[string]string{
-				"HTTP_LISTEN": ":8083",
+				"API_LISTEN": ":8083",
 			},
 			expectError: false,
 			configData:  validConfig,
 			expectConfig: &appConfig{
-				HTTP:     edge.Config{Listen: ":8083"},
-				RevProxy: revproxy.Config{Listen: ":8081"},
-				API:      api.Config{Listen: ":8082"},
+				API: api.Config{Listen: ":8082"},
 			},
 		},
 	}

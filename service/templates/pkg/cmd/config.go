@@ -6,9 +6,12 @@ import (
 	"strings"
 
 	"github.com/spf13/viper"
+	"{{ .Values.repo }}/pkg/api"
 )
 
-type appConfig struct{}
+type appConfig struct {
+	API api.Config `mapstructure:"api"`
+}
 
 // loadConfig loads the application configuration from the specified file path and environment variables.
 // It uses the provided args structure to determine the configuration path.
