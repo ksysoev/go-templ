@@ -15,13 +15,16 @@ const (
 
 type API struct {
 	config Config
+	svc    Service
 }
 
 type Config struct {
 	Listen string `mapstructure:"listen"`
 }
 
-type Service interface{}
+type Service interface {
+	CheckHealth(ctx context.Context) error
+}
 
 // New creates a new API instance with the provided configuration and service.
 // It validates the configuration and returns an error if the listen address is not specified.
