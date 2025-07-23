@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/ksysoev/service/pkg/api"
-	"github.com/ksysoev/service/pkg/core"
+	"{{ .Values.repo }}/pkg/api"
+	"{{ .Values.repo }}/pkg/core"
 )
 
 // RunCommand initializes the logger, loads configuration, creates the core and API services,
