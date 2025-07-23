@@ -5,6 +5,8 @@ import (
 	"net/http"
 )
 
+// CheckHealth verifies the health of the service and returns an error
+// if the service is unhealthy.
 func (a *API) healthCheck(w http.ResponseWriter, r *http.Request) {
 	if err := a.svc.CheckHealth(r.Context()); err != nil {
 		slog.ErrorContext(r.Context(), "Health check failed", "error", err)
