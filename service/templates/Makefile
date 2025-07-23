@@ -12,3 +12,6 @@ tidy:
 
 fmt:
 	gofmt -w .
+
+fields:
+	fieldalignment -fix ./...
