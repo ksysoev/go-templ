@@ -4,8 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/redis/go-redis/v9"
 	"{{ .Values.repo }}/pkg/api"
 	"{{ .Values.repo }}/pkg/core"
+	"{{ .Values.repo }}/pkg/repo/user"
 )
 
 // RunCommand initializes the logger, loads configuration, creates the core and API services,
@@ -19,6 +21,13 @@ func RunCommand(ctx context.Context, flags *cmdFlags) error {
 	if err != nil {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
+
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Addr,
+		Password: cfg.Redis.Password,
+	})
+
+	userRepo := user.New(rdb)
 
 	svc := core.New()
 	apiSvc, err := api.New(cfg.API, svc)

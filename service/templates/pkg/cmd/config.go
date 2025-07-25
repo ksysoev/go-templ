@@ -10,7 +10,13 @@ import (
 )
 
 type appConfig struct {
-	API api.Config `mapstructure:"api"`
+	API   api.Config  `mapstructure:"api"`
+	Redis RedisConfig `mapstructure:"redis"`
+}
+
+type RedisConfig struct {
+	Addr     string `mapstructure:"addr"`
+	Password string `mapstructure:"password"`
 }
 
 // loadConfig loads the application configuration from the specified file path and environment variables.
