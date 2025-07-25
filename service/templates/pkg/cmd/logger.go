@@ -4,6 +4,8 @@ import (
 	"context"
 	"log/slog"
 	"os"
+
+	"{{ .Values.repo }}/pkg/api/middleware"
 )
 
 // ContextHandler is a custom slog.Handler that enriches log records with application-specific attributes.
@@ -20,6 +22,10 @@ type ContextHandler struct {
 
 //nolint:gocritic // ignore this linting rule
 func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
+	if reqID := middleware.GetReqID(ctx); reqID != "" {
+		r.AddAttrs(slog.String("req_id", reqID))
+	}
+
 	r.AddAttrs(slog.String("app", h.app), slog.String("ver", h.ver))
 
 	return h.Handler.Handle(ctx, r)
