@@ -10,9 +10,9 @@ import (
 func (a *API) newMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	reqIDmid = middleware.NewReqID()
+	withReqID := middleware.NewReqID()
 
-	mux.HandleFunc("/livez", middleware.Use(a.healthCheck))
+	mux.Handle("/livez", middleware.Use(a.healthCheck, withReqID))
 
 	return mux
 }
