@@ -3,6 +3,8 @@ package core
 
 import (
 	"context"
+
+	"golang.org/x/sync/errgroup"
 )
 
 // userRepo defines the interface for user repository operations.
@@ -10,17 +12,31 @@ type userRepo interface {
 	CheckHealth(ctx context.Context) error
 }
 
-// Service encapsulates core business logic and dependencies.
-type Service struct {
-	users userRepo
+// someAPIProv defines the interface for a provider that can check health status.
+type someAPIProv interface {
+	CheckHealth(ctx context.Context) error
 }
 
-// New creates a new Service instance with the provided userRepo.
-func New(users userRepo) *Service {
-	return &Service{users: users}
+// Service encapsulates core business logic and dependencies.
+type Service struct {
+	users   userRepo
+	someAPI someAPIProv
+}
+
+// New creates a new Service instance with the provided userRepo and someAPI.
+func New(users userRepo, someAPI someAPIProv) *Service {
+	return &Service{
+		users:   users,
+		someAPI: someAPI,
+	}
 }
 
 // CheckHealth checks the health of the core service and its dependencies.
 func (s *Service) CheckHealth(ctx context.Context) error {
-	return s.users.CheckHealth(ctx)
+	eg, ctx := errgroup.WithContext(ctx)
+
+	eg.Go(func() error { return s.someAPI.CheckHealth(ctx) })
+	eg.Go(func() error { return s.users.CheckHealth(ctx) })
+
+	return eg.Wait()
 }
