@@ -7,16 +7,22 @@ import (
 
 	"github.com/spf13/viper"
 	"{{ .Values.repo }}/pkg/api"
+	"{{ .Values.repo }}/pkg/prov/someapi"
 )
 
 type appConfig struct {
-	API   api.Config  `mapstructure:"api"`
-	Redis RedisConfig `mapstructure:"redis"`
+	API      api.Config  `mapstructure:"api"`
+	Redis    RedisConfig `mapstructure:"redis"`
+	Provider Provider    `mapstructure:"provider"`
 }
 
 type RedisConfig struct {
 	Addr     string `mapstructure:"addr"`
 	Password string `mapstructure:"password"`
+}
+
+type Provider struct {
+	SomeAPI someapi.Config `mapstructure:"some_api"`
 }
 
 // loadConfig loads the application configuration from the specified file path and environment variables.

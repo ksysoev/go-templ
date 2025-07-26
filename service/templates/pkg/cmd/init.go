@@ -11,6 +11,7 @@ type BuildInfo struct {
 	Version string
 	AppName string
 }
+
 type cmdFlags struct {
 	version    string
 	appName    string
@@ -37,6 +38,7 @@ func InitCommand(build BuildInfo) cobra.Command {
 
 	cmd.PersistentFlags().StringVar(&flags.LogLevel, "log-level", "info", "log level (debug, info, warn, error)")
 	cmd.PersistentFlags().BoolVar(&flags.TextFormat, "log-text", true, "log in text format, otherwise JSON")
+	cmd.PersistentFlags().StringVar(&flags.ConfigPath, "config", "runtime/config.yml", "path to the configuration file")
 
 	for _, name := range []string{"log_level", "log_text"} {
 		if err := viper.BindEnv(name); err != nil {

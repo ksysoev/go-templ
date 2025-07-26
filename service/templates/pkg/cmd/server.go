@@ -7,6 +7,7 @@ import (
 	"github.com/redis/go-redis/v9"
 	"{{ .Values.repo }}/pkg/api"
 	"{{ .Values.repo }}/pkg/core"
+	"{{ .Values.repo }}/pkg/prov/someapi"
 	"{{ .Values.repo }}/pkg/repo/user"
 )
 
@@ -27,9 +28,10 @@ func RunCommand(ctx context.Context, flags *cmdFlags) error {
 		Password: cfg.Redis.Password,
 	})
 
+	someAPI := someapi.New(cfg.Provider.SomeAPI)
 	userRepo := user.New(rdb)
 
-	svc := core.New()
+	svc := core.New(userRepo, someAPI)
 	apiSvc, err := api.New(cfg.API, svc)
 	if err != nil {
 		return fmt.Errorf("failed to create API service: %w", err)
