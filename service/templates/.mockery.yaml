@@ -8,7 +8,10 @@ filename: "{{.InterfaceName | snakecase }}_mock.go"
 dir: "{{.InterfaceDir}}"
 mockname: "Mock{{.InterfaceName}}"
 packages:
-  github.com/ksysoev/service/pkg/core:
+  {{ .Values.repo }}/pkg/core:
     interfaces:
       userRepo:
       someAPIProv:
+  {{ .Values.repo }}/pkg/repo/user:
+    interfaces:
+      userDAO: 
