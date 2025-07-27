@@ -8,12 +8,17 @@ import (
 )
 
 func TestInitCommand(t *testing.T) {
-	cmd := InitCommand(BuildInfo{AppName: "app"})
+	cmd := InitCommand(BuildInfo{
+		AppName: "app",
+	})
 
 	assert.Equal(t, "app", cmd.Use)
 	assert.Contains(t, cmd.Short, "")
 	assert.Contains(t, cmd.Long, "")
 
-	require.Len(t, cmd.Commands(), 1)
-	assert.Equal(t, "server", cmd.Commands()[0].Use)
+	require.Len(t, cmd.Commands(), 0)
+
+	assert.Equal(t, "info", cmd.PersistentFlags().Lookup("log-level").DefValue)
+	assert.Equal(t, "true", cmd.PersistentFlags().Lookup("log-text").DefValue)
+	assert.Equal(t, "runtime/config.yml", cmd.PersistentFlags().Lookup("config").DefValue)
 }
