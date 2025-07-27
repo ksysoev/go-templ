@@ -8,12 +8,19 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"{{ .Values.repo }}/pkg/api"
+	"{{ .Values.repo }}/pkg/prov/someapi"
 )
 
 func TestLoadConfig(t *testing.T) {
 	const validConfig = `
 api:
   listen: ":8082"
+redis:
+  addr: "localhost:6379"
+  password: "testpassword"
+provider:
+  some_api:
+    base_url: "https://api.example.com"
 `
 
 	tests := []struct {
@@ -29,7 +36,18 @@ api:
 			expectError: false,
 			configData:  validConfig,
 			expectConfig: &appConfig{
-				API: api.Config{Listen: ":8082"},
+				API: api.Config{
+					Listen: ":8082",
+				},
+				Redis: RedisConfig{
+					Addr:     "localhost:6379",
+					Password: "testpassword",
+				},
+				Provider: Provider{
+					SomeAPI: someapi.Config{
+						BaseURL: "https://api.example.com",
+					},
+				},
 			},
 		},
 		{
@@ -41,17 +59,29 @@ api:
 			name:        "unparseable config file",
 			envVars:     nil,
 			expectError: true,
-			configData:  `http: "invalid"`,
+			configData:  `invalid yaml`,
 		},
 		{
 			name: "valid config with environment overrides",
 			envVars: map[string]string{
-				"API_LISTEN": ":8083",
+				"API_LISTEN":                 ":8083",
+				"PROVIDER_SOME_API_BASE_URL": "https://test.com",
 			},
 			expectError: false,
 			configData:  validConfig,
 			expectConfig: &appConfig{
-				API: api.Config{Listen: ":8082"},
+				API: api.Config{
+					Listen: ":8083",
+				},
+				Redis: RedisConfig{
+					Addr:     "localhost:6379",
+					Password: "testpassword",
+				},
+				Provider: Provider{
+					SomeAPI: someapi.Config{
+						BaseURL: "https://test.com",
+					},
+				},
 			},
 		},
 	}
