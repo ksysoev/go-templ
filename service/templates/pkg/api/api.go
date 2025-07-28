@@ -35,6 +35,7 @@ func New(cfg Config, svc Service) (*API, error) {
 
 	api := &API{
 		config: cfg,
+		svc:    svc,
 	}
 
 	return api, nil

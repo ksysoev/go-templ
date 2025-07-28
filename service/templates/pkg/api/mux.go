@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"{{ .Values.repo }}/pkg/api/middleware"
+	"github.com/ksysoev/service/pkg/api/middleware"
 )
 
 // newMux creates and returns a new HTTP ServeMux with the API's routes registered.
@@ -12,7 +12,7 @@ func (a *API) newMux() *http.ServeMux {
 
 	withReqID := middleware.NewReqID()
 
-	mux.Handle("/livez", middleware.Use(a.healthCheck, withReqID))
+	mux.Handle("GET /livez", middleware.Use(a.healthCheck, withReqID))
 
 	return mux
 }
