@@ -8,6 +8,9 @@ filename: "{{"{{.InterfaceName | snakecase }}_mock.go"}}"
 dir: "{{"{{.InterfaceDir}}"}}"
 mockname: "{{"Mock{{.InterfaceName}}"}}"
 packages:
+  {{ .Values.repo }}/pkg/api:
+    interfaces:
+      Service:
   {{ .Values.repo }}/pkg/core:
     interfaces:
       userRepo:
