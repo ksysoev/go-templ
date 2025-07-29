@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/ksysoev/service/pkg/api/middleware"
+	"{{ .Values.repo }}/pkg/api/middleware"
 )
 
 // newMux creates and returns a new HTTP ServeMux with the API's routes registered.
