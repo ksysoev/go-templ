@@ -22,9 +22,11 @@ func TestAPI_healthCheck_OK(t *testing.T) {
 	if resp.StatusCode != http.StatusOK {
 		t.Errorf("expected status 200, got %d", resp.StatusCode)
 	}
+
 	if ct := resp.Header.Get("Content-Type"); ct != "text/plain" {
 		t.Errorf("expected Content-Type text/plain, got %q", ct)
 	}
+
 	body := w.Body.String()
 	if body != "Ok" {
 		t.Errorf("expected body 'Ok', got %q", body)

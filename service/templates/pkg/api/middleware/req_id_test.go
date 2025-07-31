@@ -14,6 +14,7 @@ func TestNewReqID_MiddlewareSetsReqID(t *testing.T) {
 
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotReqID = GetReqID(r.Context())
+
 		w.WriteHeader(http.StatusOK)
 	})
 
@@ -27,14 +28,14 @@ func TestNewReqID_MiddlewareSetsReqID(t *testing.T) {
 	if gotReqID == "" {
 		t.Error("expected non-empty request ID in context")
 	}
+
 	if _, err := uuid.Parse(gotReqID); err != nil {
 		t.Errorf("expected valid UUID, got %q: %v", gotReqID, err)
 	}
 }
 
 func TestGetReqID_ReturnsEmptyStringIfNotSet(t *testing.T) {
-	ctx := t.Context()
-	reqID := GetReqID(ctx)
+	reqID := GetReqID(t.Context())
 	if reqID != "" {
 		t.Errorf("expected empty string, got %q", reqID)
 	}
@@ -42,6 +43,7 @@ func TestGetReqID_ReturnsEmptyStringIfNotSet(t *testing.T) {
 
 func TestGetReqID_ReturnsReqIDIfSet(t *testing.T) {
 	ctx := context.WithValue(t.Context(), keyReqID{}, "test-id")
+
 	reqID := GetReqID(ctx)
 	if reqID != "test-id" {
 		t.Errorf("expected 'test-id', got %q", reqID)

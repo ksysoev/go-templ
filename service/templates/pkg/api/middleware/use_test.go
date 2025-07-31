@@ -10,6 +10,7 @@ func TestUse_NoMiddleware(t *testing.T) {
 	called := false
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		called = true
+
 		w.WriteHeader(http.StatusOK)
 	}
 
@@ -33,6 +34,7 @@ func TestUse_WithMiddleware(t *testing.T) {
 	mw1 := func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			order = append(order, "mw1")
+
 			next.ServeHTTP(w, r)
 		})
 	}
@@ -40,12 +42,14 @@ func TestUse_WithMiddleware(t *testing.T) {
 	mw2 := func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			order = append(order, "mw2")
+
 			next.ServeHTTP(w, r)
 		})
 	}
 
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		order = append(order, "handler")
+
 		w.WriteHeader(http.StatusOK)
 	}
 

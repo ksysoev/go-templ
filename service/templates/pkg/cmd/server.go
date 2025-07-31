@@ -30,8 +30,8 @@ func RunCommand(ctx context.Context, flags *cmdFlags) error {
 
 	someAPI := someapi.New(cfg.Provider.SomeAPI)
 	userRepo := user.New(rdb)
-
 	svc := core.New(userRepo, someAPI)
+
 	apiSvc, err := api.New(cfg.API, svc)
 	if err != nil {
 		return fmt.Errorf("failed to create API service: %w", err)

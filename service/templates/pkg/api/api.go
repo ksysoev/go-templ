@@ -14,8 +14,8 @@ const (
 )
 
 type API struct {
-	config Config
 	svc    Service
+	config Config
 }
 
 type Config struct {
@@ -55,7 +55,9 @@ func (a *API) Run(ctx context.Context) error {
 
 	go func() {
 		<-ctx.Done()
+
 		err := s.Close()
+
 		slog.WarnContext(ctx, "shutting down API server", "error", err)
 	}()
 

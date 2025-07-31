@@ -17,13 +17,14 @@ func TestNew(t *testing.T) {
 
 func TestUserRepo_CheckHealth(t *testing.T) {
 	tests := []struct {
-		name       string // description of this test case
 		setupMocks func(t *testing.T, dao *MockuserDAO)
+		name       string // description of this test case
 		wantErr    bool
 	}{
 		{
 			name: "success",
 			setupMocks: func(t *testing.T, dao *MockuserDAO) {
+				t.Helper()
 				dao.EXPECT().Ping(mock.Anything).Return(redis.NewStatusResult("", nil))
 			},
 			wantErr: false,
@@ -31,6 +32,7 @@ func TestUserRepo_CheckHealth(t *testing.T) {
 		{
 			name: "fail",
 			setupMocks: func(t *testing.T, dao *MockuserDAO) {
+				t.Helper()
 				dao.EXPECT().Ping(mock.Anything).Return(redis.NewStatusResult("", assert.AnError))
 			},
 			wantErr: true,
@@ -40,9 +42,10 @@ func TestUserRepo_CheckHealth(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			daoMock := NewMockuserDAO(t)
 			u := New(daoMock)
-			err := u.CheckHealth(t.Context())
 
 			tt.setupMocks(t, daoMock)
+
+			err := u.CheckHealth(t.Context())
 
 			if tt.wantErr {
 				assert.Error(t, err, "CheckHealth() should return an error")

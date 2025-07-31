@@ -17,8 +17,8 @@ type Config struct {
 
 // APIClient is a client for communicating with the SomeAPI service.
 type APIClient struct {
-	cfg Config
 	cli *http.Client
+	cfg Config
 }
 
 // New creates a new APIClient with the provided configuration.

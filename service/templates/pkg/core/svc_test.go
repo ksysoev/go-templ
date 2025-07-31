@@ -17,13 +17,14 @@ func TestNew(t *testing.T) {
 
 func TestService_CheckHealth(t *testing.T) {
 	tests := []struct {
-		name       string
 		setupMocks func(t *testing.T, users *MockuserRepo, someAPI *MocksomeAPIProv)
+		name       string
 		wantErr    bool
 	}{
 		{
 			name: "Success",
 			setupMocks: func(t *testing.T, users *MockuserRepo, someAPI *MocksomeAPIProv) {
+				t.Helper()
 				users.EXPECT().CheckHealth(mock.Anything).Return(nil)
 				someAPI.EXPECT().CheckHealth(mock.Anything).Return(nil)
 			},
@@ -32,6 +33,7 @@ func TestService_CheckHealth(t *testing.T) {
 		{
 			name: "userRepo failure",
 			setupMocks: func(t *testing.T, users *MockuserRepo, someAPI *MocksomeAPIProv) {
+				t.Helper()
 				users.EXPECT().CheckHealth(mock.Anything).Return(assert.AnError)
 				someAPI.EXPECT().CheckHealth(mock.Anything).Return(nil)
 			},
@@ -40,6 +42,7 @@ func TestService_CheckHealth(t *testing.T) {
 		{
 			name: "someAPI failure",
 			setupMocks: func(t *testing.T, users *MockuserRepo, someAPI *MocksomeAPIProv) {
+				t.Helper()
 				users.EXPECT().CheckHealth(mock.Anything).Return(nil)
 				someAPI.EXPECT().CheckHealth(mock.Anything).Return(assert.AnError)
 			},
