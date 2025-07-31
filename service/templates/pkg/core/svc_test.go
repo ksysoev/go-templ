@@ -10,7 +10,6 @@ import (
 func TestNew(t *testing.T) {
 	users := NewMockuserRepo(t)
 	someAPI := NewMocksomeAPIProv(t)
-
 	svc := New(users, someAPI)
 
 	assert.NotNil(t, svc, "New() should return a non-nil Service instance")
@@ -51,11 +50,12 @@ func TestService_CheckHealth(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			users := NewMockuserRepo(t)
 			someAPI := NewMocksomeAPIProv(t)
+			s := New(users, someAPI)
 
 			tt.setupMocks(t, users, someAPI)
 
-			s := New(users, someAPI)
 			err := s.CheckHealth(t.Context())
+
 			if tt.wantErr {
 				assert.Error(t, err, "CheckHealth() should return an error")
 			} else {

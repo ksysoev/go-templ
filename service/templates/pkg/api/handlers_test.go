@@ -13,7 +13,7 @@ func TestAPI_healthCheck_OK(t *testing.T) {
 	mockSvc := NewMockService(t)
 	mockSvc.On("CheckHealth", mock.Anything).Return(nil)
 	api := &API{svc: mockSvc}
-	req := httptest.NewRequest("GET", "/health", nil)
+	req := httptest.NewRequest("GET", "/health", http.NoBody)
 	w := httptest.NewRecorder()
 
 	api.healthCheck(w, req)
@@ -35,7 +35,7 @@ func TestAPI_healthCheck_Error(t *testing.T) {
 	mockSvc := NewMockService(t)
 	mockSvc.On("CheckHealth", mock.Anything).Return(assert.AnError)
 	api := &API{svc: mockSvc}
-	req := httptest.NewRequest("GET", "/health", nil)
+	req := httptest.NewRequest("GET", "/health", http.NoBody)
 	w := httptest.NewRecorder()
 
 	api.healthCheck(w, req)

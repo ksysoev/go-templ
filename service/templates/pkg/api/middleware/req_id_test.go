@@ -20,7 +20,7 @@ func TestNewReqID_MiddlewareSetsReqID(t *testing.T) {
 	middleware := NewReqID()
 	h := middleware(handler)
 
-	req := httptest.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest("GET", "/", http.NoBody)
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, req)
 
@@ -33,7 +33,7 @@ func TestNewReqID_MiddlewareSetsReqID(t *testing.T) {
 }
 
 func TestGetReqID_ReturnsEmptyStringIfNotSet(t *testing.T) {
-	ctx := context.Background()
+	ctx := t.Context()
 	reqID := GetReqID(ctx)
 	if reqID != "" {
 		t.Errorf("expected empty string, got %q", reqID)
@@ -41,7 +41,7 @@ func TestGetReqID_ReturnsEmptyStringIfNotSet(t *testing.T) {
 }
 
 func TestGetReqID_ReturnsReqIDIfSet(t *testing.T) {
-	ctx := context.WithValue(context.Background(), keyReqID{}, "test-id")
+	ctx := context.WithValue(t.Context(), keyReqID{}, "test-id")
 	reqID := GetReqID(ctx)
 	if reqID != "test-id" {
 		t.Errorf("expected 'test-id', got %q", reqID)

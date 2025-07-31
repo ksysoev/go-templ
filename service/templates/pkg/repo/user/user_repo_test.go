@@ -1,7 +1,6 @@
 package user
 
 import (
-	"context"
 	"testing"
 
 	"github.com/redis/go-redis/v9"
@@ -11,7 +10,6 @@ import (
 
 func TestNew(t *testing.T) {
 	daoMock := NewMockuserDAO(t)
-
 	users := New(daoMock)
 
 	assert.NotNil(t, users, "New() should return a non-nil UserRepo instance")
@@ -41,10 +39,11 @@ func TestUserRepo_CheckHealth(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			daoMock := NewMockuserDAO(t)
+			u := New(daoMock)
+			err := u.CheckHealth(t.Context())
+
 			tt.setupMocks(t, daoMock)
 
-			u := New(daoMock)
-			err := u.CheckHealth(context.Background())
 			if tt.wantErr {
 				assert.Error(t, err, "CheckHealth() should return an error")
 			} else {

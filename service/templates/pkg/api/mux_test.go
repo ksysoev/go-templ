@@ -16,10 +16,12 @@ func TestAPI_newMux_LivezRoute(t *testing.T) {
 
 	a, err := New(Config{Listen: ":0"}, mockSvc)
 	require.NoError(t, err)
+
 	mux := a.newMux()
 
-	req := httptest.NewRequest("GET", "/livez", nil)
+	req := httptest.NewRequest("GET", "/livez", http.NoBody)
 	w := httptest.NewRecorder()
+
 	mux.ServeHTTP(w, req)
 
 	resp := w.Result()

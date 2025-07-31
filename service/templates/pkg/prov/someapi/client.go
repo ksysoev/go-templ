@@ -38,6 +38,10 @@ func (a *APIClient) CheckHealth(ctx context.Context) error {
 		return fmt.Errorf("fail to check health status for someapi: %w", err)
 	}
 
+	if resp.Body != nil {
+		_ = resp.Body.Close()
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("status of someapi is unhealthy")
 	}
