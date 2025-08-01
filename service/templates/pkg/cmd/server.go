@@ -37,5 +37,10 @@ func RunCommand(ctx context.Context, flags *cmdFlags) error {
 		return fmt.Errorf("failed to create API service: %w", err)
 	}
 
-	return apiSvc.Run(ctx)
+	err = apiSvc.Run(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to run API service: %w", err)
+	}
+
+	return nil
 }
