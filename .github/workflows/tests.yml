@@ -1,0 +1,29 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+      - name: Display Go version
+        run: go version
+      - uses: brokeyourbike/go-mockery-action@v0
+        with:
+          mockery-version: '2.53.3'
+      - name: Code Lint
+        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9
+      - name: Go Scaffold
+        run: go install -o go-scaffold github.com/go-scaffold/go-scaffold
+
