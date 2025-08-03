@@ -23,9 +23,9 @@ jobs:
         with:
           mockery-version: '2.53.3'
       - name: Go Scaffold
-        run: go install -o go-scaffold github.com/go-scaffold/go-scaffold
+        run: go install github.com/go-scaffold/go-scaffold/cmd/cli
       - name: Build
-        run: go-scaffold generate http_api http_api_test ./http_api/values.yaml 
+        run: cli generate http_api http_api_test ./http_api/values.yaml 
       - name: Init Template
         run: cd http_api_test && make init
       - name: Code Lint
