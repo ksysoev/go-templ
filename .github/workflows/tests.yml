@@ -27,7 +27,7 @@ jobs:
           git clone https://github.com/go-scaffold/go-scaffold.git
           cd go-scaffold && go build -o ../cli ./cmd/cli
       - name: Build
-        run: ./cli generate http_api http_api_test ./http_api/values.yaml 
+        run: ./cli generate http_api http_api_test --values ./http_api/values.yaml 
       - name: Init Template
         run: cd http_api_test && make init
       - name: Code Lint
