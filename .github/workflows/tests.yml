@@ -11,8 +11,11 @@ permissions:
 
 jobs:
   tests:
+    name: "Test template ${{matrix.template}}"
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        template: ["http_api"]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go
@@ -27,10 +30,12 @@ jobs:
           git clone https://github.com/go-scaffold/go-scaffold.git
           cd go-scaffold && go build -o ../cli ./cmd/cli
       - name: Build
-        run: ./cli generate http_api http_api_test --values ./http_api/values.yaml 
+        run: ./cli generate ${{matrix.template}} ${{matrix.template}}_test --values ./${{matrix.template}}/values.yaml 
       - name: Init Template
-        run: cd http_api_test && make init
+        run: "cd ${{matrix.template}}_test && make init"
       - name: Code Lint
         uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9
         with:
-          working-directory: http_api_test/
+          working-directory: "${{matrix.template}}_test/"
+      - name: Tests
+        run: "cd ${{matrix.template}}_test && make test"
