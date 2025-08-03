@@ -1,0 +1,41 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: "Test template ${{matrix.template}}"
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        template: ["http_api"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+      - name: Display Go version
+        run: go version
+      - uses: brokeyourbike/go-mockery-action@v0
+        with:
+          mockery-version: '2.53.3'
+      - name: Install Go Scaffold
+        run: |
+          git clone https://github.com/go-scaffold/go-scaffold.git
+          cd go-scaffold && go build -o ../cli ./cmd/cli
+      - name: Build
+        run: ./cli generate ${{matrix.template}} ${{matrix.template}}_test --values ./${{matrix.template}}/values.yaml 
+      - name: Init Template
+        run: "cd ${{matrix.template}}_test && make init"
+      - name: Code Lint
+        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9
+        with:
+          working-directory: "${{matrix.template}}_test/"
+      - name: Tests
+        run: "cd ${{matrix.template}}_test && make test"
