@@ -22,10 +22,12 @@ jobs:
       - uses: brokeyourbike/go-mockery-action@v0
         with:
           mockery-version: '2.53.3'
-      - name: Go Scaffold
-        run: go install github.com/go-scaffold/go-scaffold/cmd/cli@master
+      - name: Install Go Scaffold
+        run: |
+          git clone https://github.com/go-scaffold/go-scaffold.git
+          cd go-scaffold && go build -o ../cli ./cmd/cli
       - name: Build
-        run: cli generate http_api http_api_test ./http_api/values.yaml 
+        run: ./cli generate http_api http_api_test ./http_api/values.yaml 
       - name: Init Template
         run: cd http_api_test && make init
       - name: Code Lint
