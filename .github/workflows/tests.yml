@@ -22,8 +22,13 @@ jobs:
       - uses: brokeyourbike/go-mockery-action@v0
         with:
           mockery-version: '2.53.3'
-      - name: Code Lint
-        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9
       - name: Go Scaffold
         run: go install -o go-scaffold github.com/go-scaffold/go-scaffold
-
+      - name: Build
+        run: go-scaffold generate http_api http_api_test ./http_api/values.yaml 
+      - name: Init Template
+        run: cd http_api_test && make init
+      - name: Code Lint
+        uses: golangci/golangci-lint-action@4afd733a84b1f43292c63897423277bb7f4313a9
+        with:
+          working-directory: http_api_test/
