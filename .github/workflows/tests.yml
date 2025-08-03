@@ -23,7 +23,7 @@ jobs:
         with:
           mockery-version: '2.53.3'
       - name: Go Scaffold
-        run: go install github.com/go-scaffold/go-scaffold/cmd/cli
+        run: go install github.com/go-scaffold/go-scaffold/cmd/cli@master
       - name: Build
         run: cli generate http_api http_api_test ./http_api/values.yaml 
       - name: Init Template
