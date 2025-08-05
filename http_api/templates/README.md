@@ -7,6 +7,16 @@
 
 {{ .Values.description }}
 
+## Installation
+
+### Using Go
+
+If you have Go installed, you can install {{ .Values.name }} directly:
+
+```bash
+go install {{ .Values.name }}/cmd/{{ .Values.command }}@latest
+```
+
 ## License
 
 {{ .Values.name }} is licensed under the MIT License. See the LICENSE file for more details.

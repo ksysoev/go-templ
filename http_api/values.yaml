@@ -1,4 +1,5 @@
 name: Sample Service
+command: service 
 repo: github.com/ksysoev/myservice
 description: "Sample Service is a lightweight HTTP service template that provides a foundation for building microservices with configurable endpoints and port binding"
 http:
