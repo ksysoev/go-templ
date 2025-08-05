@@ -14,7 +14,7 @@
 If you have Go installed, you can install {{ .Values.name }} directly:
 
 ```bash
-go install {{ .Values.name }}/cmd/{{ .Values.command }}@latest
+go install {{ .Values.repo }}/cmd/{{ .Values.command }}@latest
 ```
 
 ## License
