@@ -9,12 +9,25 @@
 
 ## Installation
 
+## Building from Source
+
+```sh
+RUN CGO_ENABLED=0 go build -o {{ .Values.command }} -ldflags "-X main.version=dev -X main.name={{ .Values.command }}" ./cmd/{{ .Values.command }}/main.go
+```
+
 ### Using Go
 
 If you have Go installed, you can install {{ .Values.name }} directly:
 
-```bash
+```sh
 go install {{ .Values.repo }}/cmd/{{ .Values.command }}@latest
+```
+
+
+## Using
+
+```sh
+{{ .Values.command }} --log-level=debug --log-text=true --config=runtime/config.yml
 ```
 
 ## License

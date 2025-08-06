@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 RUN go mod download
 
-RUN CGO_ENABLED=0 go build -o {{ .Values.command }} -ldflags "-X main.version=$VERSION" ./cmd/{{ .Values.command }}/main.go
+RUN CGO_ENABLED=0 go build -o {{ .Values.command }} -ldflags "-X main.version=$VERSION -X main.name={{ .Values.command }}" ./cmd/{{ .Values.command }}/main.go
 
 FROM scratch
 
