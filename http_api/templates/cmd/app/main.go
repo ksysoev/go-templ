@@ -11,7 +11,7 @@ import (
 
 var (
 	version = "dev"
-	name    = "app"
+	name    = "{{ .Values.command }}"
 )
 
 // main executes the entry point of the application, delegating to runApp for command execution and lifecycle management.

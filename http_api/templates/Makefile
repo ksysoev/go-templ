@@ -1,3 +1,5 @@
+.DEFAULT_GOAL := help
+
 help: ## Show this help message
 	@awk 'BEGIN {FS = ":.*## "; printf "\nUsage:\n  make <target>\n\nTargets:\n"} \
 		/^([a-zA-Z_-]+):.*## / {printf "  %-10s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -20,6 +22,10 @@ fmt: ## Format code with gofmt
 fields: ## Fix field alignment
 	fieldalignment -fix ./...
 
-init: tidy fmt mocks
 
-.DEFAULT_GOAL := help
+# Temporary helpers to initialize the project structure
+# Commands below can be removed once project is initialized
+init: init_files tidy fmt mocks
+
+init_files:
+	@mv ./cmd/app ./cmd/{{ .Values.command }}

@@ -27,10 +27,9 @@ jobs:
           mockery-version: '2.53.3'
       - name: Install Go Scaffold
         run: |
-          git clone https://github.com/go-scaffold/go-scaffold.git
-          cd go-scaffold && go build -o ../cli ./cmd/cli
+          go install github.com/go-scaffold/go-scaffold/cmd/go-scaffold@master
       - name: Build
-        run: ./cli generate ${{matrix.template}} ${{matrix.template}}_test --values ./${{matrix.template}}/values.yaml 
+        run: go-scaffold generate ${{matrix.template}} ${{matrix.template}}_test --values ./${{matrix.template}}/values.yaml 
       - name: Init Template
         run: "cd ${{matrix.template}}_test && make init"
       - name: Code Lint
