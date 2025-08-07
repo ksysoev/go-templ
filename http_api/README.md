@@ -7,5 +7,7 @@ Template for generating a basic HTTP API service
 To generate the template:
 
 ```sh
-go-scaffold generate ./http_api ../my-new-service --values ./http_api/values.yml 
+go-scaffold generate ./ ../../my-service --values ./values.yaml 
+cd ../../my-service
+make init
 ```

@@ -7,5 +7,7 @@ Template for generating a basic Go package template
 To generate the template:
 
 ```sh
-go-scaffold generate ./package ../my-package --values ./templates/values.yml 
+go-scaffold generate ./ ../../my-package --values ./values.yaml 
+cd ../../my-package
+make init
 ```
