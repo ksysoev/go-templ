@@ -25,7 +25,5 @@ fields: ## Fix field alignment
 
 # Temporary helpers to initialize the project structure
 # Commands below can be removed once project is initialized
-init: init_files tidy fmt mocks
+init: tidy fmt 
 
-init_files:
-	@mv ./cmd/app ./cmd/{{ .Values.command }}

@@ -1,11 +1,11 @@
-# HTTP API Template
+# Go Package Template
 
-Template for generating a basic HTTP API service 
+Template for generating a basic Go package template 
 
 ## Usage
 
 To generate the template:
 
 ```sh
-go-scaffold generate ./http_api ../my-new-service --values ./http_api/values.yml 
+go-scaffold generate ./package ../my-package --values ./templates/values.yml 
 ```

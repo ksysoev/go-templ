@@ -1,6 +1,4 @@
-name: Sample Service
-command: service 
-repo: github.com/ksysoev/myservice
-description: "Sample Service is a lightweight HTTP service template that provides a foundation for building microservices with configurable endpoints and port binding"
-http:
-  listen: ":8080"
+name: Sample Go Package
+package: mypkg
+repo: github.com/ksysoev/my-package
+description: "A high-performance HTTP client library with built-in retry logic, request/response middleware support, and comprehensive logging capabilities. Perfect for building resilient microservices and API integrations."
