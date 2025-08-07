@@ -15,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        template: ["http_api"]
+        template: 
+          - http_api
+          - package
     steps:
       - uses: actions/checkout@v4
       - name: Setup Go

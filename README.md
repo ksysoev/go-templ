@@ -4,6 +4,9 @@ It's personal collection of project templates for [go-scaffold](https://github.c
 
 ## Templates
 
+### Go Package (`package`)
+Template for generating a basic Go package structure.
+
 ### HTTP API (`http_api`)
 A lightweight HTTP service template that provides a foundation for building REST APIs and microservices with configurable endpoints and port binding.
 

@@ -1,0 +1,4 @@
+name: Sample Go Package
+package: mypkg
+repo: github.com/ksysoev/my-package
+description: "A high-performance HTTP client library with built-in retry logic, request/response middleware support, and comprehensive logging capabilities. Perfect for building resilient microservices and API integrations."
