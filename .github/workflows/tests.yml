@@ -40,3 +40,22 @@ jobs:
           working-directory: "${{matrix.template}}_test/"
       - name: Tests
         run: "cd ${{matrix.template}}_test && make test"
+      - name: Check if Dockerfile exists
+        id: dockerfile-check
+        run: |
+          if [ -f "${{matrix.template}}_test/Dockerfile" ]; then
+            echo "dockerfile_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "dockerfile_exists=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Set up Docker Buildx
+        if: steps.dockerfile-check.outputs.dockerfile_exists == 'true'
+        uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435
+      - name: Build and push Docker image
+        if: steps.dockerfile-check.outputs.dockerfile_exists == 'true'
+        uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83
+        with:
+          context: ${{matrix.template}}_test
+          platforms: 'linux/amd64'
+          build-args: |
+            VERSION=dev
