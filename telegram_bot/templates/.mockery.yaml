@@ -12,6 +12,7 @@ packages:
     interfaces:
       Service:
       BotAPI:
+      CoreService:
   {{ .Values.repo }}/pkg/core:
     interfaces:
       chatRepo:
