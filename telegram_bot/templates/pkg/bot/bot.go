@@ -20,6 +20,16 @@ const (
 	updateTimeout  = 30
 )
 
+// contextKey is an unexported type for context keys in this package to avoid collisions.
+type contextKey string
+
+const (
+	// ContextKeyReqID is the context key for the request ID.
+	ContextKeyReqID contextKey = "req_id"
+	// ContextKeyChatID is the context key for the chat ID.
+	ContextKeyChatID contextKey = "chat_id"
+)
+
 // BotAPI defines the Telegram bot API capabilities used by the service.
 type BotAPI interface {
 	Send(c tgbotapi.Chattable) (tgbotapi.Message, error)
@@ -99,7 +109,7 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
 
-				reqCtx = context.WithValue(reqCtx, "req_id", uuid.New().String())
+				reqCtx = context.WithValue(reqCtx, ContextKeyReqID, uuid.New().String())
 
 				defer cancel()
 
@@ -138,7 +148,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 
 	msg := update.Message
 
-	ctx = context.WithValue(ctx, "chat_id", fmt.Sprintf("%d", msg.Chat.ID))
+	ctx = context.WithValue(ctx, ContextKeyChatID, fmt.Sprintf("%d", msg.Chat.ID))
 
 	var wg sync.WaitGroup
 

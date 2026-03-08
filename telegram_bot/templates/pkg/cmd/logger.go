@@ -4,6 +4,8 @@ import (
 	"context"
 	"log/slog"
 	"os"
+
+	"{{ .Values.repo }}/pkg/bot"
 )
 
 // ContextHandler is a custom slog.Handler that enriches log records with application-specific attributes.
@@ -20,11 +22,11 @@ type ContextHandler struct {
 
 //nolint:gocritic // ignore this linting rule
 func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
-	if reqID, ok := ctx.Value("req_id").(string); ok {
+	if reqID, ok := ctx.Value(bot.ContextKeyReqID).(string); ok {
 		r.AddAttrs(slog.String("req_id", reqID))
 	}
 
-	if chatID, ok := ctx.Value("chat_id").(string); ok {
+	if chatID, ok := ctx.Value(bot.ContextKeyChatID).(string); ok {
 		r.AddAttrs(slog.String("chat_id", chatID))
 	}
 
