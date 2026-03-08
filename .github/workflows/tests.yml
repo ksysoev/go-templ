@@ -18,6 +18,7 @@ jobs:
         template: 
           - http_api
           - package
+          - telegram_bot
     steps:
       - uses: actions/checkout@v6
       - name: Setup Go
