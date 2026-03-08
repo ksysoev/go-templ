@@ -1,0 +1,25 @@
+package cmd
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+func TestInitCommand(t *testing.T) {
+	cmd := InitCommand(BuildInfo{
+		AppName: "{{ .Values.command }}",
+		Version: "1.0.0",
+	})
+
+	assert.Equal(t, "{{ .Values.command }}", cmd.Use)
+	assert.NotEmpty(t, cmd.Short)
+	assert.NotEmpty(t, cmd.Long)
+
+	require.Len(t, cmd.Commands(), 0)
+
+	assert.Equal(t, "info", cmd.PersistentFlags().Lookup("log-level").DefValue)
+	assert.Equal(t, "true", cmd.PersistentFlags().Lookup("log-text").DefValue)
+	assert.Equal(t, "runtime/config.yml", cmd.PersistentFlags().Lookup("config").DefValue)
+}

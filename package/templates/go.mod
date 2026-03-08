@@ -1,5 +1,5 @@
 
 module {{ .Values.repo}}
 
-go 1.24.4
+go 1.26.1
 

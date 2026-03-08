@@ -1,0 +1,4 @@
+name: Sample Bot
+command: bot
+repo: github.com/ksysoev/mybot
+description: "Sample Bot is a Telegram bot template that provides a foundation for building bots with configurable commands, middleware, and external service integrations"

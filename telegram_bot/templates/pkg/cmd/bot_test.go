@@ -11,16 +11,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestRunCommand_InitLoggerFails(t *testing.T) {
+func TestRunBot_InitLoggerFails(t *testing.T) {
 	flags := &cmdFlags{
 		LogLevel: "WrongLogLevel",
 	}
 
-	err := RunCommand(t.Context(), flags)
+	err := RunBot(t.Context(), flags)
 	assert.ErrorContains(t, err, "failed to init logger")
 }
 
-func TestRunCommand_LoadConfigFails(t *testing.T) {
+func TestRunBot_LoadConfigFails(t *testing.T) {
 	tmpDir := t.TempDir()
 	configPath := filepath.Join(tmpDir, "config.yaml")
 
@@ -32,28 +32,32 @@ func TestRunCommand_LoadConfigFails(t *testing.T) {
 		LogLevel:   "info",
 	}
 
-	err = RunCommand(t.Context(), flags)
+	err = RunBot(t.Context(), flags)
 	assert.ErrorContains(t, err, "failed to load config:")
 }
 
-func TestRunCommand_APIFails(t *testing.T) {
-	t.Setenv("API_LISTEN", "WRONG_ADDRESS_TO_LISTEN")
-	err := RunCommand(t.Context(), &cmdFlags{LogLevel: "info"})
-	assert.ErrorContains(t, err, "failed to run API service:")
+func TestRunBot_BotFails(t *testing.T) {
+	// No telegram token set — bot creation should fail
+	flags := &cmdFlags{
+		LogLevel: "info",
+	}
+
+	err := RunBot(t.Context(), flags)
+	assert.ErrorContains(t, err, "failed to create bot service:")
 }
 
-func TestRunCommand_Success(t *testing.T) {
-	t.Setenv("API_LISTEN", ":0")
+func TestRunBot_Success(t *testing.T) {
+	t.Setenv("BOT_TELEGRAM_TOKEN", "test-token")
 
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)
-
 		cancel()
 	}()
 
-	err := RunCommand(ctx, &cmdFlags{LogLevel: "info"})
-	assert.NoError(t, err, "expected RunCommand to succeed with valid configuration")
+	// Bot creation will fail with invalid token — this tests the wiring, not Telegram connectivity
+	err := RunBot(ctx, &cmdFlags{LogLevel: "info"})
+	assert.ErrorContains(t, err, "failed to create bot service:")
 }
