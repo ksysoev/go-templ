@@ -3,8 +3,7 @@ package core
 
 import (
 	"context"
-
-	"golang.org/x/sync/errgroup"
+	"errors"
 )
 
 // userRepo defines the interface for user repository operations.
@@ -33,10 +32,8 @@ func New(users userRepo, someAPI someAPIProv) *Service {
 
 // CheckHealth checks the health of the core service and its dependencies.
 func (s *Service) CheckHealth(ctx context.Context) error {
-	eg, ctx := errgroup.WithContext(ctx)
-
-	eg.Go(func() error { return s.someAPI.CheckHealth(ctx) })
-	eg.Go(func() error { return s.users.CheckHealth(ctx) })
-
-	return eg.Wait()
+	return errors.Join(
+		s.someAPI.CheckHealth(ctx),
+		s.users.CheckHealth(ctx),
+	)
 }
