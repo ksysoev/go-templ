@@ -10,20 +10,31 @@ Template for generating a basic Go package structure.
 ### HTTP API (`http_api`)
 A lightweight HTTP service template that provides a foundation for building REST APIs and microservices with configurable endpoints and port binding.
 
+### Telegram Bot (`telegram_bot`)
+A full-featured Telegram bot service template with middleware support, Redis-backed state storage, structured logging, and graceful shutdown handling.
+
 ## Usage
 
-To use these templates with first install [go-scaffold](https://github.com/go-scaffold/go-scaffold). Then by following examples that provided in every template create your values file to generate project tailored to your needs.
+To use these templates first install [go-scaffold](https://github.com/go-scaffold/go-scaffold). Then by following the examples provided in every template create your values file to generate a project tailored to your needs.
 
 ```bash
-# Generate a new project using a template
-go-scaffold generate http_api  my-awesome-service --values ./http_api/values.yaml 
+# Generate a Go package
+go-scaffold generate package my-package --values ./package/values.yaml
+
+# Generate an HTTP API service
+go-scaffold generate http_api my-service --values ./http_api/values.yaml
+
+# Generate a Telegram bot
+go-scaffold generate telegram_bot my-bot --values ./telegram_bot/values.yaml
 ```
+
+After generation, run `make init` inside the generated project to tidy dependencies, format code, and generate mocks.
 
 ## Template Structure
 
 Each template follows a consistent structure:
-- `template.yaml` - Template configuration
-- `values.yaml` - Default values for the template
+- `Manifest.yaml` - Template configuration
+- `values.yaml`   - Default values for the template
 - Project files and directories with Go template syntax
 
 ## Contributing
@@ -33,12 +44,6 @@ Each template follows a consistent structure:
 3. Add your template files with appropriate Go template syntax
 4. Update this README with your template description
 5. Submit a pull request
-
-## Available Templates
-
-- **http_api** - REST API and microservice template
-
-More templates coming soon!
 
 ## License
 
