@@ -27,9 +27,8 @@ jobs:
           go-version: '1.26.1'
       - name: Display Go version
         run: go version
-      - uses: brokeyourbike/go-mockery-action@v0
-        with:
-          mockery-version: '2.53.3'
+      - name: Install mockery
+        run: go install github.com/vektra/mockery/v2@v2.53.3
       - name: Install Go Scaffold
         run: |
           go install github.com/go-scaffold/go-scaffold/cmd/go-scaffold@master
