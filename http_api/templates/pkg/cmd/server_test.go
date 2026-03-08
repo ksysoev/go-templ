@@ -46,6 +46,7 @@ func TestRunCommand_Success(t *testing.T) {
 	t.Setenv("API_LISTEN", ":0")
 
 	ctx, cancel := context.WithCancel(t.Context())
+	defer cancel()
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)
