@@ -50,6 +50,7 @@ func TestRunBot_Success(t *testing.T) {
 	t.Setenv("BOT_TELEGRAM_TOKEN", "test-token")
 
 	ctx, cancel := context.WithCancel(t.Context())
+	defer cancel()
 
 	go func() {
 		time.Sleep(100 * time.Millisecond)

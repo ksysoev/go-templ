@@ -151,6 +151,7 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 
 	go func() {
 		defer wg.Done()
+
 		s.keepTyping(ctx, msg.Chat.ID, typingInterval)
 	}()
 

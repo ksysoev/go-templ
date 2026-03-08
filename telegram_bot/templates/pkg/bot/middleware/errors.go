@@ -35,6 +35,7 @@ func WithErrorHandling() Middleware {
 
 				return tgbotapi.NewMessage(chatID, "Sorry, I encountered an error while processing your request. Please try again later."), nil
 			}
+
 			return msgConfig, nil
 		})
 	}

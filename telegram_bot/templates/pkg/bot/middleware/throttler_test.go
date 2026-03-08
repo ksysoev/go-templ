@@ -23,6 +23,7 @@ func TestWithThrottlerLimitsConcurrentProcessing(t *testing.T) {
 	handler := HandlerFunc(func(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 		mu.Lock()
 		currentCount++
+
 		if currentCount > maxCount {
 			maxCount = currentCount
 		}
@@ -44,8 +45,10 @@ func TestWithThrottlerLimitsConcurrentProcessing(t *testing.T) {
 	// Send 10 concurrent requests
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
+
 		go func() {
 			defer wg.Done()
+
 			_, _ = throttled.Handle(t.Context(), &tgbotapi.Message{})
 		}()
 	}
@@ -69,8 +72,10 @@ func TestWithThrottlerHandlesContextCancellation(t *testing.T) {
 	// Fill up the throttler
 	var wg sync.WaitGroup
 	wg.Add(1)
+
 	go func() {
 		defer wg.Done()
+
 		_, _ = throttled.Handle(t.Context(), &tgbotapi.Message{})
 	}()
 

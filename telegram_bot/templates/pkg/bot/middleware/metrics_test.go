@@ -39,6 +39,7 @@ func TestWithMetrics(t *testing.T) {
 				if msg == nil {
 					return tgbotapi.MessageConfig{}, assert.AnError
 				}
+
 				return tgbotapi.MessageConfig{}, nil
 			}),
 			message:       nil,

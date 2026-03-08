@@ -20,13 +20,11 @@ type ContextHandler struct {
 
 //nolint:gocritic // ignore this linting rule
 func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
-	//nolint:staticcheck // standard pattern for request-scoped values
-	if reqID, ok := ctx.Value("req_id").(string); ok {
+	if reqID, ok := ctx.Value("req_id").(string); ok { //nolint:staticcheck // standard pattern for request-scoped values
 		r.AddAttrs(slog.String("req_id", reqID))
 	}
 
-	//nolint:staticcheck // standard pattern for request-scoped values
-	if chatID, ok := ctx.Value("chat_id").(string); ok {
+	if chatID, ok := ctx.Value("chat_id").(string); ok { //nolint:staticcheck // standard pattern for request-scoped values
 		r.AddAttrs(slog.String("chat_id", chatID))
 	}
 

@@ -33,7 +33,7 @@ func New(cfg Config) *APIClient {
 
 // CheckHealth checks the health status of the SomeAPI service.
 func (a *APIClient) CheckHealth(ctx context.Context) error {
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, a.cfg.BaseURL+"/livez", nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, a.cfg.BaseURL+"/livez", http.NoBody)
 	if err != nil {
 		return fmt.Errorf("fail to create health check request for someapi: %w", err)
 	}
