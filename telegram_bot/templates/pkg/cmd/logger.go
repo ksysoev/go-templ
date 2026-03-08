@@ -35,6 +35,26 @@ func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
 	return h.Handler.Handle(ctx, r)
 }
 
+// WithAttrs returns a new ContextHandler that wraps the result of the embedded handler's WithAttrs call.
+// This ensures the context enrichment (req_id, chat_id, app, ver) is preserved after logger.With(...) calls.
+func (h ContextHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return ContextHandler{
+		Handler: h.Handler.WithAttrs(attrs),
+		ver:     h.ver,
+		app:     h.app,
+	}
+}
+
+// WithGroup returns a new ContextHandler that wraps the result of the embedded handler's WithGroup call.
+// This ensures the context enrichment (req_id, chat_id, app, ver) is preserved after logger.WithGroup(...) calls.
+func (h ContextHandler) WithGroup(name string) slog.Handler {
+	return ContextHandler{
+		Handler: h.Handler.WithGroup(name),
+		ver:     h.ver,
+		app:     h.app,
+	}
+}
+
 // initLogger initializes the default logger for the application using slog.
 // It returns an error if the log level string is invalid.
 func initLogger(flags *cmdFlags) error {

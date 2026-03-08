@@ -58,8 +58,19 @@ func TestWithErrorHandling(t *testing.T) {
 			message: &tgbotapi.Message{
 				Chat: &tgbotapi.Chat{ID: 123},
 			},
-			expectedError: nil,
-			expectedMsg:   "Sorry, I encountered an error while processing your request. Please try again later.",
+			expectedError: context.Canceled,
+			expectedMsg:   "",
+		},
+		{
+			name: "handles context deadline exceeded",
+			handler: HandlerFunc(func(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+				return tgbotapi.MessageConfig{}, context.DeadlineExceeded
+			}),
+			message: &tgbotapi.Message{
+				Chat: &tgbotapi.Chat{ID: 123},
+			},
+			expectedError: context.DeadlineExceeded,
+			expectedMsg:   "",
 		},
 		{
 			name: "handles nil message",
@@ -78,7 +89,7 @@ func TestWithErrorHandling(t *testing.T) {
 			msgConfig, err := handler.Handle(t.Context(), tt.message)
 
 			if tt.expectedError != nil {
-				assert.Error(t, err)
+				assert.ErrorIs(t, err, tt.expectedError)
 			} else {
 				assert.NoError(t, err)
 				assert.Equal(t, tt.expectedMsg, msgConfig.Text)

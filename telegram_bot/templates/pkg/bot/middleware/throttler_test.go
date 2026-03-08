@@ -130,3 +130,25 @@ func TestWithThrottlerReleasesSlots(t *testing.T) {
 	_, err2 := throttled.Handle(t.Context(), &tgbotapi.Message{})
 	assert.NoError(t, err2, "second call should succeed after slot is released")
 }
+
+func TestWithThrottlerZeroDefaultsToOne(t *testing.T) {
+	handler := HandlerFunc(func(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+		return tgbotapi.MessageConfig{}, nil
+	})
+
+	// maxConcurrent=0 must not deadlock; it should default to 1
+	throttled := WithThrottler(0)(handler)
+	_, err := throttled.Handle(t.Context(), &tgbotapi.Message{})
+	assert.NoError(t, err, "zero maxConcurrent should default to 1 and not deadlock")
+}
+
+func TestWithThrottlerNegativeDefaultsToOne(t *testing.T) {
+	handler := HandlerFunc(func(ctx context.Context, msg *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
+		return tgbotapi.MessageConfig{}, nil
+	})
+
+	// negative maxConcurrent must not panic; it should default to 1
+	throttled := WithThrottler(-5)(handler)
+	_, err := throttled.Handle(t.Context(), &tgbotapi.Message{})
+	assert.NoError(t, err, "negative maxConcurrent should default to 1 and not panic")
+}

@@ -10,9 +10,13 @@ import (
 
 // WithThrottler limits the number of concurrent handler executions by ensuring no more than maxConcurrent routines run.
 // It uses a buffered channel as a semaphore to manage concurrency, blocking excess requests until a slot is available.
-// Accepts maxConcurrent, the maximum number of concurrent executions allowed.
+// Accepts maxConcurrent, the maximum number of concurrent executions allowed. Values <= 0 default to 1.
 // Returns a Middleware that enforces the concurrency limit and an error if context is cancelled or message is nil.
 func WithThrottler(maxConcurrent int) Middleware {
+	if maxConcurrent <= 0 {
+		maxConcurrent = 1
+	}
+
 	// Create a buffered channel with capacity of maxConcurrent to act as a semaphore
 	throttler := make(chan struct{}, maxConcurrent)
 

@@ -48,7 +48,7 @@ func (a *APIClient) CheckHealth(ctx context.Context) error {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("status of someapi is unhealthy")
+		return fmt.Errorf("someapi health check returned unexpected status %d", resp.StatusCode)
 	}
 
 	return nil

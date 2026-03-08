@@ -113,7 +113,12 @@ func TestUse(t *testing.T) {
 			handler := Use(tc.handler, tc.middlewares...)
 			res, err := handler.Handle(t.Context(), tc.message)
 			assert.Equal(t, tc.expectedMessage, res)
-			assert.Equal(t, tc.expectedErr, err)
+
+			if tc.expectedErr != nil {
+				assert.EqualError(t, err, tc.expectedErr.Error())
+			} else {
+				assert.NoError(t, err)
+			}
 		})
 	}
 }

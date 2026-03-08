@@ -10,6 +10,7 @@ import (
 
 // WithErrorHandling adds error handling middleware to a Handler.
 // It intercepts errors returned by the next Handler and generates an appropriate error message response for the user.
+// Context cancellation and deadline errors are passed through unchanged so callers can handle them explicitly.
 // Returns a Middleware wrapping the original Handler with error handling logic.
 func WithErrorHandling() Middleware {
 	return func(next Handler) Handler {
@@ -20,6 +21,11 @@ func WithErrorHandling() Middleware {
 
 			msgConfig, err := next.Handle(ctx, message)
 			if err != nil {
+				// Pass context errors through so callers can distinguish cancellation from handler failures.
+				if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+					return tgbotapi.MessageConfig{}, err
+				}
+
 				var chatID int64
 				if message.Chat != nil {
 					chatID = message.Chat.ID

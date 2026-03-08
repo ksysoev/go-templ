@@ -50,7 +50,7 @@ func loadConfig(flags *cmdFlags) (*appConfig, error) {
 		return nil, fmt.Errorf("failed to unmarshal config: %w", err)
 	}
 
-	slog.Debug("Config loaded", slog.Any("config", cfg))
+	slog.Debug("Config loaded", slog.String("provider_base_url", cfg.Provider.SomeAPI.BaseURL))
 
 	return &cfg, nil
 }
