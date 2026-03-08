@@ -99,7 +99,6 @@ func (s *ServiceImpl) Run(ctx context.Context) error {
 
 				reqCtx, cancel := context.WithTimeout(ctx, requestTimeout)
 
-				//nolint:staticcheck // standard pattern for request-scoped values
 				reqCtx = context.WithValue(reqCtx, "req_id", uuid.New().String())
 
 				defer cancel()
@@ -139,7 +138,6 @@ func (s *ServiceImpl) processUpdate(ctx context.Context, update *tgbotapi.Update
 
 	msg := update.Message
 
-	//nolint:staticcheck // standard pattern for request-scoped values
 	ctx = context.WithValue(ctx, "chat_id", fmt.Sprintf("%d", msg.Chat.ID))
 
 	var wg sync.WaitGroup

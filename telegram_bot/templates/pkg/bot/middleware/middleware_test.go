@@ -49,6 +49,7 @@ func TestUse(t *testing.T) {
 					return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 						res, err := next.Handle(ctx, message)
 						res.Text += " world"
+
 						return res, err
 					})
 				},
@@ -70,6 +71,7 @@ func TestUse(t *testing.T) {
 					return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 						res, err := next.Handle(ctx, message)
 						res.Text += " middle"
+
 						return res, err
 					})
 				},
@@ -77,6 +79,7 @@ func TestUse(t *testing.T) {
 					return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 						res, err := next.Handle(ctx, message)
 						res.Text += " end"
+
 						return res, err
 					})
 				},
