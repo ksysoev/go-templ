@@ -78,7 +78,7 @@ func TestWithErrorHandling(t *testing.T) {
 				return tgbotapi.MessageConfig{}, errors.New("handler error")
 			}),
 			message:       nil,
-			expectedError: errors.New("message is nil"),
+			expectedError: ErrNilMessage,
 			expectedMsg:   "",
 		},
 	}

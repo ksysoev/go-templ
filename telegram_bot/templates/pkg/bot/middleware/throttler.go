@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -23,7 +22,7 @@ func WithThrottler(maxConcurrent int) Middleware {
 	return func(next Handler) Handler {
 		return HandlerFunc(func(ctx context.Context, message *tgbotapi.Message) (tgbotapi.MessageConfig, error) {
 			if message == nil {
-				return tgbotapi.MessageConfig{}, errors.New("message is nil")
+				return tgbotapi.MessageConfig{}, ErrNilMessage
 			}
 
 			// Try to acquire a slot or wait for context cancellation
