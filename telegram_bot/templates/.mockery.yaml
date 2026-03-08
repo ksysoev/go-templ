@@ -1,0 +1,21 @@
+disable-version-string: true
+resolve-type-alias: false
+with-expecter: true
+mock-build-tags: "!compile"
+inpackage: true
+issue-845-fix: true
+filename: "{{"{{.InterfaceName | snakecase }}_mock.go"}}"
+dir: "{{"{{.InterfaceDir}}"}}"
+mockname: "{{"Mock{{.InterfaceName}}"}}"
+packages:
+  {{ .Values.repo }}/pkg/bot:
+    interfaces:
+      Service:
+      BotAPI:
+  {{ .Values.repo }}/pkg/core:
+    interfaces:
+      chatRepo:
+      someAPIProv:
+  {{ .Values.repo }}/pkg/repo/chat:
+    interfaces:
+      chatDAO:
