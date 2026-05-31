@@ -1,15 +1,26 @@
-# Basic set up for three package managers
-
 version: 2
 updates:
 
-  # Maintain dependencies for GitHub Actions
+  # Maintain dependencies for GitHub Actions in root workflows
   - package-ecosystem: "github-actions"
-    # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
     directory: "/"
     schedule:
       interval: "weekly"
-  - package-ecosystem: gomod
-    directory: "/"
+
+  # Maintain dependencies for GitHub Actions in http_api template
+  - package-ecosystem: "github-actions"
+    directory: "/http_api/templates"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for GitHub Actions in package template
+  - package-ecosystem: "github-actions"
+    directory: "/package/templates"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for GitHub Actions in telegram_bot template
+  - package-ecosystem: "github-actions"
+    directory: "/telegram_bot/templates"
     schedule:
       interval: "weekly"
